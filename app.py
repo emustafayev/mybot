@@ -1,18 +1,20 @@
 import random
 from flask import Flask, request
 from pymessenger.bot import Bot
+import os
+
 
 app = Flask(__name__)
-ACCESS_TOKEN = 'EAALtgu1nkG8BAJ6R2XgiZBR5iamwTdeomz2UkCAZBlgEK3c2ZAZAHZCJ1xP7VC9gUn9d7DOykZCyuZCmbvDCX4z81IE7FOZAP5gghG7xl2lfJ8DCvvra1jYBvKcPzOf6BE3zAiH2TlPQ7P3XMbt4atMQriwGfZBBYiN5LqMyF0KauzwZDZD'
-VERIFY_TOKEN = 'VERIFY_TOKEN'
+ACCESS_TOKEN =os.environ['EAALtgu1nkG8BAJ6R2XgiZBR5iamwTdeomz2UkCAZBlgEK3c2ZAZAHZCJ1xP7VC9gUn9d7DOykZCyuZCmbvDCX4z81IE7FOZAP5gghG7xl2lfJ8DCvvra1jYBvKcPzOf6BE3zAiH2TlPQ7P3XMbt4atMQriwGfZBBYiN5LqMyF0KauzwZDZD']
+VERIFY_TOKEN = os.environ['VERIFY_TOKEN']
 bot = Bot(ACCESS_TOKEN)
 
-#We will receive messages that Facebook sends our bot at this endpoint 
+#We will receive messages that Facebook sends our bot at this endpoint
 @app.route("/", methods=['GET', 'POST'])
 def receive_message():
     if request.method == 'GET':
         """Before allowing people to message your bot, Facebook has implemented a verify token
-        that confirms all requests that your bot receives came from Facebook.""" 
+        that confirms all requests that your bot receives came from Facebook."""
         token_sent = request.args.get("hub.verify_token")
         return verify_fb_token(token_sent)
     #if the request was not get, it must be POST and we can just proceed with sending a message back to user
